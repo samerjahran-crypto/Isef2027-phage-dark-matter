@@ -8,20 +8,20 @@ ISEF 2027 — Computational Biology & Bioinformatics
 ---
 
 > **70% of marine phage proteins are functionally unknown.**  
-> This project uses protein language model embeddings to illuminate that darkness —  
+> This project uses protein language model embeddings to illuminate that darkness  
 > and finds that the surface ocean selects for a strikingly different viral strategy.
 
 ---
 
 ## The Problem
 
-Marine bacteriophages are the most abundant biological entities on Earth (~10³¹ particles), killing 20–40% of marine bacteria daily. Despite exponential growth in ocean sequencing, approximately 70% of phage proteins have no detectable homology to any characterized sequence — the viral "dark matter." Traditional BLAST-based annotation fails here by design: these proteins are too evolutionarily distant.
+Marine bacteriophages are the most abundant biological entities on Earth (~10³¹ particles), killing 20–40% of marine bacteria daily. Despite exponential growth in ocean sequencing, approximately 70% of phage proteins have no detectable homology to any characterized sequence the viral "dark matter." Traditional BLAST-based annotation fails here by design: these proteins are too evolutionarily distant.
 
 ## The Approach
 
-Rather than searching for sequence similarity, this project embeds proteins into a **480-dimensional biological meaning space** using ESM-2 (Lin et al. 2023, *Science*) — a protein language model trained on 250 million sequences. Functionally related proteins cluster in this space regardless of sequence identity.
+Rather than searching for sequence similarity, this project embeds proteins into a **480-dimensional biological meaning space** using ESM-2 (Lin et al. 2023, *Science*)  a protein language model trained on 250 million sequences. Functionally related proteins cluster in this space regardless of sequence identity.
 
-An MLP classifier trained on 43,475 VOG-labeled phage proteins achieves **Macro F1 = 0.917** across four functional classes, then predicts function for **184,394 uncharacterized proteins** from NCBI RefSeq — the largest phage dark matter functional atlas produced to date.
+An MLP classifier trained on 43,475 VOG-labeled phage proteins achieves **Macro F1 = 0.917** across four functional classes, then predicts function for **184,394 uncharacterized proteins** from NCBI RefSeq the largest phage dark matter functional atlas produced to date.
 
 ## Key Finding: Surface Ocean Phage Ecology
 
@@ -36,7 +36,7 @@ Three independent datasets converge on the same signal:
 
 *p < 0.001 after Bonferroni correction. Red Sea and Tara Oceans show nearly identical composition despite different oceans, sequencing platforms, and assembly pipelines.*
 
-**Interpretation:** Surface ocean oligotrophy selects for host versatility over structural complexity — consistent with kill-the-winner dynamics (Thingstad 2000) and nutrient-constrained capsid economics.
+**Interpretation:** Surface ocean oligotrophy selects for host versatility over structural complexity  consistent with kill-the-winner dynamics (Thingstad 2000) and nutrient-constrained capsid economics.
 
 ## Classifier Performance
 
