@@ -1,0 +1,23 @@
+# This is the PUBLIC repo — full pipeline lives in the private repo
+
+# Never commit these
+*.pkl          # trained models — release on Zenodo after competition
+*.npy          # embeddings — too large
+*.npz
+*.fasta        # raw data — download from NCBI
+*.fastq
+*.fastq.gz
+*.faa          # except example_proteins.faa in demo/
+
+# Keep example FASTA
+!demo/example_proteins.faa
+
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+venv/
+.env/
+
+# OS
+.DS_Store
