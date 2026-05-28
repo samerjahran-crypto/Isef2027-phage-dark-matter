@@ -15,13 +15,13 @@ ISEF 2027 — Computational Biology & Bioinformatics
 
 ## The Problem
 
-Marine bacteriophages are the most abundant biological entities on Earth (~10³¹ particles), killing 20–40% of marine bacteria daily. Despite exponential growth in ocean sequencing, approximately 70% of phage proteins have no detectable homology to any characterized sequence — the viral dark matter. Traditional BLAST-based annotation fails here by design: these proteins are too evolutionarily distant.
+Marine bacteriophages are the most abundant biological entities on Earth (~10³¹ particles), killing 20–40% of marine bacteria daily. Despite exponential growth in ocean sequencing, approximately 70% of phage proteins have no detectable homology to any characterized sequence  the viral dark matter. Traditional BLAST-based annotation fails here by design: these proteins are too evolutionarily distant.
 
 ## The Approach
 
-Rather than searching for sequence similarity, this project embeds proteins into a **480-dimensional biological meaning space** using ESM-2 (Lin et al. 2023, *Science*) — a protein language model trained on 250 million sequences. Functionally related proteins cluster in this space regardless of sequence identity.
+Rather than searching for sequence similarity, this project embeds proteins into a **480-dimensional biological meaning space** using ESM-2 (Lin et al. 2023, *Science*) a protein language model trained on 250 million sequences. Functionally related proteins cluster in this space regardless of sequence identity.
 
-An MLP classifier trained on 43,475 VOG-labeled phage proteins achieves **Macro F1 = 0.9086 ± 0.0059 (five-fold CV)** across four functional classes, then predicts function for **184,394 uncharacterized proteins** from NCBI RefSeq — the largest phage dark matter functional atlas produced to date.
+An MLP classifier trained on 43,475 VOG-labeled phage proteins achieves **Macro F1 = 0.9086 ± 0.0059 (five-fold CV)** across four functional classes, then predicts function for **184,394 uncharacterized proteins** from NCBI RefSeq which is the largest phage dark matter functional atlas produced to date.
 
 ## Key Finding: A Depth-Stratified Functional Gradient
 
@@ -36,7 +36,7 @@ Four independent datasets across two depth zones reveal a clear depth gradient:
 
 *p < 0.001 after Bonferroni correction (α = 0.0125, k = 4)*
 
-**The depth gradient is monotonic:** host-interaction proteins decrease from surface (87%) to mesopelagic (81.3%) to global baseline (77.8%). Structural proteins show the opposite trend. This is consistent with oligotrophic selection pressure and kill-the-winner dynamics (Thingstad 2000) — forces that are strongest at the nutrient-depleted, diverse surface and attenuate with depth.
+**The depth gradient is monotonic:** host-interaction proteins decrease from surface (87%) to mesopelagic (81.3%) to global baseline (77.8%). Structural proteins show the opposite trend. This is consistent with oligotrophic selection pressure and kill-the-winner dynamics (Thingstad 2000)  forces that are strongest at the nutrient-depleted, diverse surface and attenuate with depth.
 
 ## Classifier Performance
 
@@ -55,10 +55,10 @@ Controls confirm ESM-2 captures genuine biological signal, not sequence artifact
 
 90 high-confidence predictions (25 per class, 15 transcription) were BLASTed against NCBI nr and Swiss-Prot:
 
-- **BLAST nr:** 86/90 hits (95.6%) — replication 100%, transcription 100%, structural 96%, host_interaction 88%
+- **BLAST nr:** 86/90 hits (95.6%) replication 100%, transcription 100%, structural 96%, host_interaction 88%
 - **BLAST Swiss-Prot:** Zero hits across all classes
 
-These proteins are validated by nr homology but have never been experimentally characterized — confirming genuine novelty.
+These proteins are validated by nr homology but have never been experimentally characterized  confirming genuine novelty.
 
 ## Pipeline Overview
 
