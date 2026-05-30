@@ -1,0 +1,77 @@
+{
+  "results": [
+    {
+      "seq_id": "k99_60606_1",
+      "class": "host_interaction",
+      "conf": 0.973,
+      "has_nr_hit": true,
+      "top_hit": "MAG: valine--tRNA ligase [SAR86 cluster bacterium]"
+    },
+    {
+      "seq_id": "k99_3252_1",
+      "class": "replication",
+      "conf": 0.948,
+      "has_nr_hit": true,
+      "top_hit": "cysteine synthase A [Synechococcus sp.] >dbj|GIR23966.1| MAG: cysteine synthase "
+    },
+    {
+      "seq_id": "k99_3430_1",
+      "class": "replication",
+      "conf": 0.99,
+      "has_nr_hit": true,
+      "top_hit": "RNA methyltransferase [Prochlorococcus marinus] >gb|MBO8242119.1| TrmJ/YjtD fami"
+    },
+    {
+      "seq_id": "k99_32582_2",
+      "class": "host_interaction",
+      "conf": 0.95,
+      "has_nr_hit": false,
+      "top_hit": "none"
+    },
+    {
+      "seq_id": "k99_19554_1",
+      "class": "host_interaction",
+      "conf": 0.936,
+      "has_nr_hit": true,
+      "top_hit": "heme exporter protein CcmB [Paracoccaceae bacterium]"
+    },
+    {
+      "seq_id": "k99_50800_1",
+      "class": "replication",
+      "conf": 0.971,
+      "has_nr_hit": false,
+      "top_hit": "none"
+    },
+    {
+      "seq_id": "k99_9278_1",
+      "class": "transcription",
+      "conf": 0.956,
+      "has_nr_hit": false,
+      "top_hit": "none"
+    },
+    {
+      "seq_id": "k99_23057_1",
+      "class": "replication",
+      "conf": 0.959,
+      "has_nr_hit": false,
+      "top_hit": "none"
+    },
+    {
+      "seq_id": "k99_68050_1",
+      "class": "host_interaction",
+      "conf": 0.982,
+      "has_nr_hit": false,
+      "top_hit": "none"
+    },
+    {
+      "seq_id": "k99_27652_1",
+      "class": "structural",
+      "conf": 0.97,
+      "has_nr_hit": false,
+      "top_hit": "none"
+    }
+  ],
+  "hit_rate": 0.4,
+  "n_tested": 10,
+  "n_hits": 4
+}

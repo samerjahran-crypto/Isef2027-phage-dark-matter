@@ -1,0 +1,46 @@
+{
+  "tara_surface_0m": {
+    "n_proteins": 2010,
+    "n_contigs": 1254,
+    "protein_hi_pct": 0.8716,
+    "contig_weighted_hi_pct": 0.8716,
+    "bootstrap_ci_low": 0.8604,
+    "bootstrap_ci_high": 0.8915,
+    "novel_contig_hi_pct": 0.6052,
+    "pp_vs_baseline": 9.36,
+    "novel_pp_vs_novel_base": 3.72
+  },
+  "red_sea_10m": {
+    "n_proteins": 81359,
+    "n_contigs": 41376,
+    "protein_hi_pct": 0.868,
+    "contig_weighted_hi_pct": 0.868,
+    "bootstrap_ci_low": 0.8645,
+    "bootstrap_ci_high": 0.8699,
+    "novel_contig_hi_pct": 0.5559,
+    "pp_vs_baseline": 9.0,
+    "novel_pp_vs_novel_base": -1.21
+  },
+  "pacific_800m": {
+    "n_proteins": 118208,
+    "n_contigs": 55223,
+    "protein_hi_pct": 0.8127,
+    "contig_weighted_hi_pct": 0.8127,
+    "bootstrap_ci_low": 0.7953,
+    "bootstrap_ci_high": 0.801,
+    "novel_contig_hi_pct": 0.5499,
+    "pp_vs_baseline": 3.47,
+    "novel_pp_vs_novel_base": -1.81
+  },
+  "malaspina_200m": {
+    "n_proteins": 5313,
+    "n_contigs": 4929,
+    "protein_hi_pct": 0.7828,
+    "contig_weighted_hi_pct": 0.7828,
+    "bootstrap_ci_low": 0.7738,
+    "bootstrap_ci_high": 0.7968,
+    "novel_contig_hi_pct": 0.5428,
+    "pp_vs_baseline": 0.48,
+    "novel_pp_vs_novel_base": -2.52
+  }
+}

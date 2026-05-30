@@ -1,0 +1,83 @@
+[
+  {
+    "seq_id": "k99_60606_1",
+    "class": "host_interaction",
+    "conf": 0.9728512,
+    "length": 153,
+    "has_strict_hit": false,
+    "has_relaxed_hit": false,
+    "top_hits": []
+  },
+  {
+    "seq_id": "k99_3252_1",
+    "class": "replication",
+    "conf": 0.94779336,
+    "length": 170,
+    "has_strict_hit": false,
+    "has_relaxed_hit": false,
+    "top_hits": []
+  },
+  {
+    "seq_id": "k99_3430_1",
+    "class": "replication",
+    "conf": 0.9899573,
+    "length": 128,
+    "has_strict_hit": false,
+    "has_relaxed_hit": false,
+    "top_hits": []
+  },
+  {
+    "seq_id": "k99_19554_1",
+    "class": "host_interaction",
+    "conf": 0.93644595,
+    "length": 206,
+    "has_strict_hit": false,
+    "has_relaxed_hit": false,
+    "top_hits": []
+  },
+  {
+    "seq_id": "k99_50800_1",
+    "class": "replication",
+    "conf": 0.9714616,
+    "length": 131,
+    "has_strict_hit": false,
+    "has_relaxed_hit": false,
+    "top_hits": []
+  },
+  {
+    "seq_id": "k99_9278_1",
+    "class": "transcription",
+    "conf": 0.9562906,
+    "length": 162,
+    "has_strict_hit": false,
+    "has_relaxed_hit": false,
+    "top_hits": []
+  },
+  {
+    "seq_id": "k99_23057_1",
+    "class": "replication",
+    "conf": 0.9593456,
+    "length": 229,
+    "has_strict_hit": false,
+    "has_relaxed_hit": false,
+    "top_hits": []
+  },
+  {
+    "seq_id": "k99_68050_1",
+    "class": "host_interaction",
+    "conf": 0.98156446,
+    "length": 135,
+    "has_strict_hit": false,
+    "has_relaxed_hit": false,
+    "top_hits": []
+  },
+  {
+    "seq_id": "k99_27652_1",
+    "class": "structural",
+    "conf": 0.96970326,
+    "length": 56,
+    "has_strict_hit": false,
+    "has_relaxed_hit": false,
+    "top_hits": []
+  }
+]

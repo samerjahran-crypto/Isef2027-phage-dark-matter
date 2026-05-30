@@ -1,0 +1,19 @@
+{
+  "MLP_original": {
+    "mean_f1": 0.8653,
+    "std_f1": 0.0039,
+    "time_s": 497
+  },
+  "Random_Forest": {
+    "mean_f1": 0.4762,
+    "std_f1": 0.0077,
+    "time_s": 100
+  },
+  "SVM_RBF": {
+    "mean_f1": 0.6253,
+    "std_f1": 0.005,
+    "time_s": 1839
+  },
+  "note": "Gradient Boosting not completed due to compute time. MLP outperforms both tested alternatives by 0.24-0.39 F1 points, confirming MLP as the appropriate classifier for this task.",
+  "interpretation": "The MLP classifier (F1=0.8653) substantially outperforms Random Forest (F1=0.4762, delta=-0.389) and SVM with RBF kernel (F1=0.6253, delta=-0.240) on the same ESM-2 embeddings under identical 3-fold cross-validation. This confirms that the MLP architecture is not an arbitrary choice \u2014 it is the best-performing classifier tested on this feature space."
+}

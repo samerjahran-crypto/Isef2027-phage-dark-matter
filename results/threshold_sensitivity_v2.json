@@ -1,0 +1,61 @@
+{
+  "threshold_sensitivity": {
+    "0.95": {
+      "near_hi": 0.7984,
+      "novel_hi": 0.5391,
+      "gap_pp": 25.93,
+      "near_n": 151540,
+      "novel_n": 12748
+    },
+    "0.97": {
+      "near_hi": 0.8069,
+      "novel_hi": 0.5483,
+      "gap_pp": 25.86,
+      "near_n": 146091,
+      "novel_n": 18197
+    },
+    "0.99": {
+      "near_hi": 0.8237,
+      "novel_hi": 0.5682,
+      "gap_pp": 25.54,
+      "near_n": 135100,
+      "novel_n": 29188
+    },
+    "0.995": {
+      "near_hi": 0.8335,
+      "novel_hi": 0.5796,
+      "gap_pp": 25.4,
+      "near_n": 128559,
+      "novel_n": 35729
+    },
+    "0.999": {
+      "near_hi": 0.855,
+      "novel_hi": 0.6042,
+      "gap_pp": 25.08,
+      "near_n": 114030,
+      "novel_n": 50258
+    }
+  },
+  "power_analysis": {
+    "tara_surface_0m": {
+      "n": 233,
+      "hi": 0.605,
+      "power": 0.2049
+    },
+    "red_sea_10m": {
+      "n": 8570,
+      "hi": 0.556,
+      "power": 0.5041
+    },
+    "pacific_800m": {
+      "n": 16368,
+      "hi": 0.55,
+      "power": 0.9604
+    },
+    "malaspina_200m": {
+      "n": 724,
+      "hi": 0.543,
+      "power": 0.268
+    }
+  }
+}

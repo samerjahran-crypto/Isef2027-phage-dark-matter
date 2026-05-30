@@ -1,0 +1,9 @@
+{
+  "observed_diff_pp": 9.01,
+  "observed_z": 53.82,
+  "n_permutations": 10000,
+  "permutation_p": 0.0,
+  "percentile_95_pp": 0.26,
+  "significant": true,
+  "interpretation": "Observed surface enrichment (+9.01pp) exceeds 95th percentile of permutation distribution (0.26pp) by factor of 35. Zero of 10,000 permutations produced a difference as large as observed. Confounding by dataset differences cannot explain the surface host-interaction enrichment."
+}

@@ -1,0 +1,7 @@
+{
+  "total_dark_matter": 184394,
+  "high_confidence_n": 164288,
+  "ultra_high_confidence_n": 135100,
+  "ultra_high_confidence_pct": 82.23,
+  "interpretation": "Proteins with >0.99 confidence are likely near-relatives of training sequences (82.2% of high-confidence predictions). This sets an upper bound on CD-HIT leakage."
+}

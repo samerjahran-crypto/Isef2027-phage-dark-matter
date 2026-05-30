@@ -1,0 +1,38 @@
+{
+  "tara_surface_0m": {
+    "total_hc": 2010,
+    "near_relative_n": 1777,
+    "genuine_novel_n": 233,
+    "hi_all_pct": 0.8716,
+    "hi_novel_pct": 0.6052,
+    "hi_near_pct": 0.9066,
+    "vs_novel_baseline_pp": 3.72
+  },
+  "red_sea_10m": {
+    "total_hc": 81359,
+    "near_relative_n": 72789,
+    "genuine_novel_n": 8570,
+    "hi_all_pct": 0.868,
+    "hi_novel_pct": 0.5559,
+    "hi_near_pct": 0.9047,
+    "vs_novel_baseline_pp": -1.21
+  },
+  "pacific_800m": {
+    "total_hc": 118208,
+    "near_relative_n": 101840,
+    "genuine_novel_n": 16368,
+    "hi_all_pct": 0.8127,
+    "hi_novel_pct": 0.5499,
+    "hi_near_pct": 0.8549,
+    "vs_novel_baseline_pp": -1.81
+  },
+  "malaspina_200m": {
+    "total_hc": 5313,
+    "near_relative_n": 4589,
+    "genuine_novel_n": 724,
+    "hi_all_pct": 0.7828,
+    "hi_novel_pct": 0.5428,
+    "hi_near_pct": 0.8207,
+    "vs_novel_baseline_pp": -2.52
+  }
+}
