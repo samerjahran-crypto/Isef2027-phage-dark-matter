@@ -1,0 +1,152 @@
+{
+  "k99_3252_1": {
+    "predicted_class": "replication",
+    "has_structural_homolog": true,
+    "n_hits": 6,
+    "top_hits": [
+      {
+        "db": "afdb-swissprot",
+        "target": "AF-P73410-F1-model_v6 Cysteine synthase",
+        "prob": 1.0,
+        "evalue": "?"
+      },
+      {
+        "db": "afdb-swissprot",
+        "target": "AF-Q9LJA0-F1-model_v6 Putative inactive cysteine synthase 2",
+        "prob": 1.0,
+        "evalue": "?"
+      },
+      {
+        "db": "afdb50",
+        "target": "AF-A0A832H3L6-F1-model_v6 Cysteine synthase (Fragment)",
+        "prob": 1.0,
+        "evalue": "?"
+      }
+    ]
+  },
+  "k99_19554_1": {
+    "predicted_class": "host_interaction",
+    "has_structural_homolog": true,
+    "n_hits": 6,
+    "top_hits": [
+      {
+        "db": "afdb-swissprot",
+        "target": "AF-P29960-F1-model_v6 Heme exporter protein B",
+        "prob": 1.0,
+        "evalue": "?"
+      },
+      {
+        "db": "afdb-swissprot",
+        "target": "AF-P30964-F1-model_v6 Heme exporter protein B",
+        "prob": 1.0,
+        "evalue": "?"
+      },
+      {
+        "db": "afdb50",
+        "target": "AF-A0A368DPM2-F1-model_v6 Heme exporter protein B",
+        "prob": 1.0,
+        "evalue": "?"
+      }
+    ]
+  },
+  "k99_9278_1": {
+    "predicted_class": "transcription",
+    "has_structural_homolog": true,
+    "n_hits": 6,
+    "top_hits": [
+      {
+        "db": "afdb-swissprot",
+        "target": "AF-Q851C7-F1-model_v6 Probable cytokinin riboside 5'-monophosphate phosphoribohydrolase LOG4",
+        "prob": 1.0,
+        "evalue": "?"
+      },
+      {
+        "db": "afdb-swissprot",
+        "target": "AF-Q8GW29-F1-model_v6 Cytokinin riboside 5'-monophosphate phosphoribohydrolase LOG7",
+        "prob": 1.0,
+        "evalue": "?"
+      },
+      {
+        "db": "afdb50",
+        "target": "AF-A0A3C0MCJ8-F1-model_v6 Cytokinin riboside 5'-monophosphate phosphoribohydrolase (Fragment)",
+        "prob": 1.0,
+        "evalue": "?"
+      }
+    ]
+  },
+  "k99_23057_1": {
+    "predicted_class": "replication",
+    "has_structural_homolog": true,
+    "n_hits": 6,
+    "top_hits": [
+      {
+        "db": "afdb-swissprot",
+        "target": "AF-P22990-F1-model_v6 Bifunctional riboflavin kinase/FMN adenylyltransferase",
+        "prob": 1.0,
+        "evalue": "?"
+      },
+      {
+        "db": "afdb-swissprot",
+        "target": "AF-Q8K9Z1-F1-model_v6 Bifunctional riboflavin kinase/FMN adenylyltransferase",
+        "prob": 1.0,
+        "evalue": "?"
+      },
+      {
+        "db": "afdb50",
+        "target": "AF-A0A920L2Y1-F1-model_v6 Riboflavin biosynthesis protein",
+        "prob": 1.0,
+        "evalue": "?"
+      }
+    ]
+  },
+  "k99_68050_1": {
+    "predicted_class": "host_interaction",
+    "has_structural_homolog": true,
+    "n_hits": 6,
+    "top_hits": [
+      {
+        "db": "afdb-swissprot",
+        "target": "AF-P44184-F1-model_v6 Uncharacterized protein HI_1410",
+        "prob": 0.692,
+        "evalue": "?"
+      },
+      {
+        "db": "afdb-swissprot",
+        "target": "AF-P42263-2-F1-model_v6 Glutamate receptor 3",
+        "prob": 0.601,
+        "evalue": "?"
+      },
+      {
+        "db": "afdb50",
+        "target": "AF-X1BIQ2-F1-model_v6 Terminase large subunit gp17-like C-terminal domain-containing protein (Fragment)",
+        "prob": 1.0,
+        "evalue": "?"
+      }
+    ]
+  },
+  "k99_27652_1": {
+    "predicted_class": "structural",
+    "has_structural_homolog": true,
+    "n_hits": 6,
+    "top_hits": [
+      {
+        "db": "afdb-swissprot",
+        "target": "AF-B8G5D6-F1-model_v6 NADPH dehydrogenase",
+        "prob": 1.0,
+        "evalue": "?"
+      },
+      {
+        "db": "afdb-swissprot",
+        "target": "AF-A4J778-F1-model_v6 Metal reductase",
+        "prob": 1.0,
+        "evalue": "?"
+      },
+      {
+        "db": "afdb50",
+        "target": "AF-A0A356W5F2-F1-model_v6 12-oxophytodienoate reductase (Fragment)",
+        "prob": 1.0,
+        "evalue": "?"
+      }
+    ]
+  }
+}

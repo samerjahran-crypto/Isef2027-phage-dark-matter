@@ -1,0 +1,50 @@
+{
+  "folded": {
+    "k99_60606_1": {
+      "error": 422
+    },
+    "k99_3252_1": {
+      "length": 170,
+      "mean_plddt": 0.9,
+      "high_conf_pct": 0.0,
+      "pdb_saved": true
+    },
+    "k99_3430_1": {
+      "error": 422
+    },
+    "k99_19554_1": {
+      "length": 206,
+      "mean_plddt": 0.9,
+      "high_conf_pct": 0.0,
+      "pdb_saved": true
+    },
+    "k99_50800_1": {
+      "error": 422
+    },
+    "k99_9278_1": {
+      "error": 422
+    },
+    "k99_23057_1": {
+      "length": 229,
+      "mean_plddt": 0.9,
+      "high_conf_pct": 0.0,
+      "pdb_saved": true
+    },
+    "k99_68050_1": {
+      "length": 135,
+      "mean_plddt": 0.7,
+      "high_conf_pct": 0.0,
+      "pdb_saved": true
+    },
+    "k99_27652_1": {
+      "error": 504
+    }
+  },
+  "foldseek": {},
+  "summary": {
+    "n_proteins": 9,
+    "n_folded": 4,
+    "n_no_structural_homolog": 0,
+    "n_with_structural_hits": 0
+  }
+}

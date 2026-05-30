@@ -1,0 +1,44 @@
+{
+  "k99_3252_1": {
+    "length": 170,
+    "mean_plddt": 88.3,
+    "high_conf_pct": 96.1,
+    "quality": "HIGH",
+    "pdb_saved": true
+  },
+  "k99_19554_1": {
+    "length": 206,
+    "mean_plddt": 88.2,
+    "high_conf_pct": 97.2,
+    "quality": "HIGH",
+    "pdb_saved": true
+  },
+  "k99_9278_1": {
+    "length": 161,
+    "mean_plddt": 81.2,
+    "high_conf_pct": 86.8,
+    "quality": "HIGH",
+    "pdb_saved": true
+  },
+  "k99_23057_1": {
+    "length": 229,
+    "mean_plddt": 92.6,
+    "high_conf_pct": 97.1,
+    "quality": "HIGH",
+    "pdb_saved": true
+  },
+  "k99_68050_1": {
+    "length": 135,
+    "mean_plddt": 70.8,
+    "high_conf_pct": 65.4,
+    "quality": "HIGH",
+    "pdb_saved": true
+  },
+  "k99_27652_1": {
+    "length": 56,
+    "mean_plddt": 83.4,
+    "high_conf_pct": 90.6,
+    "quality": "HIGH",
+    "pdb_saved": true
+  }
+}
