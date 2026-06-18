@@ -119,7 +119,7 @@ Raw metagenomic reads
         ↓
   ORF prediction (Prodigal)
         ↓
-  ESM-2 embeddings (esm2_t33_650M_UR50D)
+ ESM-2 embeddings (esm2_t12_35M_UR50D)
         ↓
   MLP classifier (5-fold CV, macro F1 = 0.9086)
         ↓
