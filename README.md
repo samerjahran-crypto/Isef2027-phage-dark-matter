@@ -1,8 +1,8 @@
 PhageAMR-Finder
 
-Show Image
-Show Image
-Show Image
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20935067.svg)](https://doi.org/10.5281/zenodo.20935067)
+[![Web Tool](https://img.shields.io/badge/Web%20Tool-HuggingFace-yellow)](https://huggingface.co/spaces/Samerjahran/phage-dark-matter-annotator)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 Mawhiba Ibdaa 2027 | Samer Ali Alghamdi
 Al-Andalus International School, Jeddah, Saudi Arabia
