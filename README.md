@@ -9,7 +9,7 @@ Al-Andalus International School, Jeddah, Saudi Arabia
 Contact: samerjahran@gmail.com
 
 > ESM-2 protein language model embeddings functionally annotate bacteriophage proteins
-> that sequence-alignment tools cannot find — including a novel AMR candidate
+> that sequence-alignment tools cannot find.Including a novel AMR candidate
 > against carbapenem-resistant *Klebsiella pneumoniae* ST258 with zero BLAST hits
 > in any database.
 
