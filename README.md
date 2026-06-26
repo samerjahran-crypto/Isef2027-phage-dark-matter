@@ -78,7 +78,7 @@ Raw metagenomic reads
 
 Resources
 
-ResourceLinkWeb toolhttps://huggingface.co/spaces/Samerjahran/phage-dark-matter-annotatorZenodo v2 (current models)https://doi.org/10.5281/zenodo.20935067Zenodo v1https://doi.org/10.5281/zenodo.20435564GitHubhttps://github.com/samerjahran-crypto/Isef2027-phage-dark-matter
+ResourceLinkWeb toolhttps://huggingface.co/spaces/Samerjahran/phage-dark-matter-annotator Zenodo v2 (current models)https://doi.org/10.5281/zenodo.20935067 Zenodo v1 https://doi.org/10.5281/zenodo.20435564 GitHub https://github.com/samerjahran-crypto/Isef2027-phage-dark-matter
 
 
 Citation
