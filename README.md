@@ -1,116 +1,79 @@
-# PHAGEAMR-FINDER: In Silico Functional Annotation of Ocean Bacteriophage Dark Matter
+# PhageAMR-Finder
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20435564.svg)](https://doi.org/10.5281/zenodo.20435564)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20935067.svg)](https://doi.org/10.5281/zenodo.20935067)
 [![Web Tool](https://img.shields.io/badge/Web%20Tool-HuggingFace-yellow)](https://huggingface.co/spaces/Samerjahran/phage-dark-matter-annotator)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 **Mawhiba Ibdaa 2027 | Samer Ali Alghamdi**
 Al-Andalus International School, Jeddah, Saudi Arabia
-Contact: samerjahran@gmail.com
-
-> ESM-2 protein language model embeddings functionally annotate bacteriophage proteins
-> that sequence-alignment tools cannot find.Including a novel AMR candidate
-> against carbapenem-resistant *Klebsiella pneumoniae* ST258 with zero BLAST hits
-> in any database.
-
-*Computational pipeline reviewed by Prof. Robert Hoehndorf, KAUST.*
+samerjahran@gmail.com
 
 ---
 
-## 🔬 Try the Web Tool
+## What this project is about
 
-**[phage-dark-matter-annotator on HuggingFace →](https://huggingface.co/spaces/Samerjahran/phage-dark-matter-annotator)**
+The ocean is full of viruses we've never characterized. Most of their proteins return zero BLAST hits — no known relatives, no functional annotation, nothing. Standard tools just skip them.
 
-Paste any phage protein sequence. The tool returns a functional category prediction with confidence score using ESM-2 embeddings — including proteins with zero sequence homology to anything in NCBI nr.
+This project uses ESM-2 protein language model embeddings to annotate those proteins without needing sequence similarity to anything previously described. Instead of asking "does this look like something we've seen before?", the model learns what functional classes look like in 3D structural space — and can recognize them even when the sequence is completely novel.
 
----
+The work started because I found one protein in Red Sea viral dark matter that looked genuinely strange. It turned out to have two functional domains fused together in a way that, if it works the way the structural evidence suggests, creates a trap that drug-resistant *Klebsiella pneumoniae* ST258 cannot escape. That protein — k99_19554_1 — is what this project is built around.
 
-## Core Finding
-
-Nine Red Sea phage proteins from the genuinely novel confidence tier returned **zero BLAST hits in NCBI nr at any e-value threshold**, yet the ESM-2 classifier assigned them to functional categories with confidence above 0.85. Structural validation (ESMFold + Foldseek) confirmed known folds in all 17 zero-homology proteins tested (100% concordance).
-
-Protein language models operate in the sequence space where homology-based annotation fails entirely.
+**[Try the web tool →](https://huggingface.co/spaces/Samerjahran/phage-dark-matter-annotator)**
 
 ---
 
-## Key Results
+## The core finding: k99_19554_1
 
-| Result | Value |
+k99_19554_1 is a 218 amino acid protein from an uncultivated Red Sea phage (metagenomic contig SRR2102994, KAUST expedition, 10m depth). It has zero BLAST hits in any global database — it genuinely doesn't look like anything that's been described before.
+
+Structural matching via Foldseek 3Di revealed two domains:
+
+**N-terminal (residues 1–109) — CcmB heme exporter fold**
+Foldseek probability 1.0. CcmB is part of the iron acquisition pathway that *Klebsiella* ST258 depends on to survive in human blood — serum iron is held at around 10⁻¹⁸ M as an immune defense, so the bacterium has to steal iron from hemoglobin to survive. This locus is conserved in 98.9% of 2,242 sequenced ST258 clinical genomes (Lan 2023). It can't be easily mutated away without killing the cell.
+
+**C-terminal (residues 110–218) — Class II holin fold**
+Foldseek match to AF-R3WJF2 (E-value 2.40), covering the TMH1-loop-TMH2 hairpin — the core pore-forming machinery of Class II holins. The 7th transmembrane helix maps to this domain.
+
+**The evolutionary trap:** if *Klebsiella* mutates away from the CcmB pathway, it loses its iron source and starves. If it keeps the pathway, the holin domain can dock into the inner membrane, oligomerize, and lyse the cell. There's no single mutation that escapes both consequences simultaneously.
+
+Sixteen independent evidence lines — structural, physicochemical, ecological, and computational — support this interpretation. Wet-lab validation (propidium iodide pore-forming kinetics assay on the C-terminal domain, hemin-biotin dot-blot on the N-terminal domain) is planned for August–September 2026 at KAUST.
+
+---
+
+## Classifier performance (v4)
+
+| Metric | Value |
 |--------|-------|
-| Classifier macro F1 (5-fold CV) | 0.9086 ± 0.0059 |
-| vs k-mer baseline | +0.113 F1 points |
-| vs SVM (RBF) | +0.240 F1 points |
-| vs Random Forest | +0.389 F1 points |
-| External validation accuracy (n=200) | 100.0% (macro F1 = 1.0000) |
-| Near-relative tier BLAST hit rate (conf >0.99) | 95.6% |
-| Genuinely novel tier BLAST hit rate (conf 0.85–0.99) | 44.0% (56% dark fraction, 95% CI 47–65%) |
-| Structural validation: zero-homology proteins matched known folds | 17/17 (100% concordance) |
-| Two-tier functional gap | +25 to +26 pp stable across cutoffs 0.95–0.999 |
-| Permutation test p-value | p < 0.0001 (n=10,000 shuffles) |
+| CV Macro F1 (5-fold, 1318 sequences) | 0.9771 ± 0.0091 |
+| Bootstrap 95% CI | [0.9936, 0.9994] |
+| OOD rejection — human GPCRs → non_phage | 100% (434/434) |
+| Permutation test p-value | p < 0.0001 (n=10,000) |
+| MMseqs2 leakage check (70% identity threshold) | Zero overlap |
+
+**8 functional classes:** host_binding, membrane_disruption, iron_acquisition, structural, replication, regulatory, metabolic_amg, non_phage
+
+Version 4 added a non_phage class trained on 200 human GPCR sequences. Human proteins are now correctly rejected at 100% rather than being forced into a phage functional class. This was a genuine limitation of earlier versions that's now fixed.
+
+**One honest caveat:** k99_19554_1 itself classifies as metabolic_amg under mean-pooled ESM-2 embeddings. This is a known limitation of mean-pooling for highly hydrophobic multi-transmembrane proteins — documented in Meier et al. 2021 (NeurIPS) and supported by silhouette analysis (membrane_disruption cluster score 0.05, iron_acquisition 0.06). The functional annotation of k99 is based on the Foldseek structural evidence, not the classifier output.
 
 ---
 
-## Two-Tier Dark Matter Discovery
+## Ecological finding
 
-| Population | n | BLAST hit rate | Host-interaction % |
-|------------|---|----------------|-------------------|
-| Near-relatives (conf > 0.99) | 135,100 | 95.6% | 82% |
-| Genuinely novel (conf 0.85–0.99) | 29,188 | 44.0% | 57% |
+The pipeline was run on four ocean metagenomes across different depths and ocean basins:
 
-> **Clarification:** The 0% BLAST hit rate in the Core Finding refers to the structural
-> validation subset (n=9), not the full genuinely novel tier. The full tier BLAST hit
-> rate is 44.0% (95% CI 47–65%), confirming a 56% dark fraction with no homology to
-> any characterized protein.
+| Dataset | Ocean | Depth |
+|---------|-------|-------|
+| Tara Oceans ERR315858 | Indian Ocean | 0 m |
+| Red Sea SRR2102994 | Red Sea | 10 m |
+| Malaspina ERR770958 | Atlantic Ocean | 200 m |
+| Tara Oceans ERR599370 | Pacific Ocean | 800 m |
 
-The depth gradient in host-interaction enrichment (+9 pp at surface, p < 0.0001) is driven by the near-relative population. Genuinely novel proteins show depth-invariant functional composition across all four ocean datasets.
-
----
-
-## AMR Relevance
-
-Phage therapy against ESBL-producing and carbapenem-resistant bacteria requires knowing which phage proteins mediate host recognition. This project annotates **4,764 host-interaction proteins** in the Red Sea genuinely novel tier — proteins with zero sequence homology to anything characterized, now functionally annotated for the first time.
+The novel dark matter tier shows depth-invariant functional composition across all four datasets (Two-Way ANOVA, depth effect p > 0.05). The near-relative tier follows the expected published depth gradient in the same data. Since both tiers were processed through the same pipeline, the difference is biological, not methodological.
 
 ---
 
-## Top AMR Candidate: k99_19554_1
-
-Seven independent computational lines of evidence for this protein as a phage therapy candidate against carbapenem-resistant *Klebsiella pneumoniae* ST258:
-
-| Evidence | Result |
-|----------|--------|
-| BLAST hits | Zero (viral + bacterial databases) |
-| ESMFold pLDDT | 88.2 |
-| Foldseek CcmB match | Probability 1.0 |
-| TM helices (Phobius) | 7 predicted |
-| GRAVY score | 1.335 (membrane protein) |
-| ESM-2 prediction | host_interaction, 93.6% confidence |
-| RNA-seq validation | Hemin transport upregulated in CRE Klebsiella ST258 (PMID 29669884) |
-
-CcmB is a heme exporter upregulated in carbapenem-resistant *Klebsiella* ST258. k99_19554_1 folds into this structure with probability 1.0, has zero sequence homology to any characterized protein, and is classified as a host-interaction protein by ESM-2 at 93.6% confidence.
-
----
-
-## Benchmark vs Pharokka
-
-Pharokka v1.9.1 (PHROGs + CARD + VFDB) was run on the target contig containing k99_19554_1. Pharokka annotated 1/2 genes (50%) and **missed k99_19554_1 entirely** — no genes called, no functions assigned on that contig. ESM-2 successfully classified k99_19554_1 as host_interaction at 93.6% confidence.
-
-Sequence-alignment tools are blind to proteins with zero homology. Embedding-based methods are not.
-
----
-
-## Ocean Metagenome Datasets
-
-| Dataset | Ocean | Depth | HC Proteins |
-|---------|-------|-------|-------------|
-| Tara Oceans ERR315858 | Indian Ocean | 0 m | 2,010 |
-| Red Sea SRR2102994 | Red Sea | 10 m | 81,359 |
-| Malaspina ERR770958 | Atlantic Ocean | 200 m | 5,313 |
-| Tara Oceans ERR599370 | Pacific Ocean | 800 m | 118,208 |
-| Tara Oceans ERR599376 | Pacific Ocean | Surface | In progress |
-
----
-
-## Pipeline
+## Pipeline overview
 
 ```
 Raw metagenomic reads
@@ -119,54 +82,39 @@ Raw metagenomic reads
         ↓
   ORF prediction (Prodigal)
         ↓
- ESM-2 embeddings (esm2_t12_35M_UR50D)
+  ESM-2 embeddings (esm2_t12_35M_UR50D, layer 12, mean-pooled, 480-dim)
         ↓
-  MLP classifier (5-fold CV, macro F1 = 0.9086)
+  MLP classifier (8 classes, 5-fold CV, Macro F1 = 0.9771)
         ↓
-  Functional annotation + confidence tiering
+  Functional annotation + confidence tiering (threshold 0.50)
         ↓
   AMR candidate identification
         ↓
-  Structural validation (ESMFold + Foldseek)
+  Structural validation (ESMFold + Foldseek 3Di)
 ```
 
 ---
 
-## Reproducibility
+## Resources
 
 | Resource | Link |
 |----------|------|
-| Archived models | https://doi.org/10.5281/zenodo.20435564 |
 | Web tool | https://huggingface.co/spaces/Samerjahran/phage-dark-matter-annotator |
+| Zenodo v2 (current models) | https://doi.org/10.5281/zenodo.20935067 |
+| Zenodo v1 | https://doi.org/10.5281/zenodo.20435564 |
 | GitHub | https://github.com/samerjahran-crypto/Isef2027-phage-dark-matter |
-
----
-
-## Seeking Wet-Lab Collaboration
-
-The computational case for **k99_19554_1** is complete with seven independent lines of evidence. The next step is experimental validation — a MIC assay or growth inhibition experiment testing this protein against *Klebsiella pneumoniae* ST258 or a suitable surrogate.
-
-**Specific requirements:**
-- BSL-2-permitted lab with access to clinical *Klebsiella* isolates
-- Capability to perform MIC assay or growth inhibition experiment
-- Based in Saudi Arabia or willing to collaborate remotely
-
-Any collaborating lab would receive full co-authorship on the resulting paper. The project is targeting **Mawhiba Ibdaa 2027** and ultimately **ISEF**.
-
-If you are interested or can suggest a contact, please reach out: **samerjahran@gmail.com**
 
 ---
 
 ## Citation
 
-If you use this work, please cite:
-
 ```
-Alghamdi, S. A. (2026). In silico Functional Annotation of Ocean Bacteriophage Dark Matter.
-Zenodo. https://doi.org/10.5281/zenodo.20435564
+Alghamdi, S. A. (2026). ESM-2 MLP Classifier for Ocean Phage Dark Matter
+Functional Annotation — Ibdaa 2027 (v2). Zenodo.
+https://doi.org/10.5281/zenodo.20935067
 ```
 
 ---
 
-*Grade 8 student | Al-Andalus International School | Jeddah, Saudi Arabia*
-*Computational pipeline reviewed by Prof. Robert Hoehndorf, King Abdullah University of Science and Technology (KAUST)*
+*Grade 9 | Al-Andalus International School | Jeddah, Saudi Arabia*
+*Computational methodology reviewed by Prof. Robert Hoehndorf, King Abdullah University of Science and Technology (KAUST)*
