@@ -1,165 +1,149 @@
-# Methods Overview
+# Methods Overview — PhageAMR-Finder v6b
 
-*Detailed methodology for:*  
-*"In Silico Functional Annotation of the Uncharacterized Ocean Bacteriophage Proteome via Protein Language Model Embeddings"*
+*Methodology for:*
+*"Protein Language Models for Annotating Red Sea Phage Dark Matter: A Novel Antimicrobial Peptide Candidate Against Carbapenem-Resistant* Klebsiella pneumoniae*"*
+
+**Canonical version:** v6b (competition release, August 2026)
+**Zenodo archive:** https://doi.org/10.5281/zenodo.20935067
 
 ---
 
-## 1. Training Data Construction
+## 1. Data Source
 
-**Source:** NCBI RefSeq phage genomes (downloaded January 2026)  
-**Total proteins:** 227,996 after translation
+**Metagenome:** Red Sea marine metagenome, SRA accession SRR2102994, BioProject PRJNA289734 (Thompson et al. 2017, *ISME J* 11:138).
+Samples were collected from Red Sea surface water during a KAUST oceanographic expedition. This accession was independently confirmed against the original BioProject record after an AI tool incorrectly suggested it was an unrelated bacterial control strain.
 
-**Redundancy reduction:** CD-HIT v4.8.1 at 90% sequence identity (`-c 0.90 -n 5`)  
-This prevents the classifier from learning sequence identity rather than functional signal.
+**Assembly:** MEGAHIT v1.2.9 → 92,500 contigs.
 
-**Functional annotation:** Virus Orthologous Groups (VOG) database (vogdb.org)  
-VOG assigns proteins to functional categories based on phylogenetic clustering.  
-Four classes retained (sufficient training examples, biologically interpretable):
+**Viral identification:** geNomad v1.8.0 (Camargo et al. 2023, *Nature Biotechnology*) was applied to all 92,500 contigs before any protein classification. Only contigs with a geNomad viral score ≥ 0.7 and ≥ 2 viral hallmark genes were carried forward. This pre-filtering step is mandatory — running the classifier on all contigs without viral confirmation produced a false-positive rate of 56% in the top-ranked candidates (see Ablation section). The retired candidate k99_19554_1 was a direct consequence of omitting this filter in an earlier pipeline version.
+
+**Result:** 3,610 confirmed viral contigs, yielding 2,042 predicted proteins for classification.
+
+---
+
+## 2. Training Set Construction (v6b, 1,541 sequences, 8 classes)
+
+The classifier was trained on 1,541 manually curated phage protein sequences across eight functional classes. The training set was assembled from Swiss-Prot, UniProt phage entries, PHROG database annotations, and literature-confirmed phage protein families.
+
+### Class definitions
 
 | Class | Count | Description |
-|-------|-------|-------------|
-| host_interaction | 31,027 | Tail fibers, receptor-binding proteins, anti-restriction systems |
-| replication | 6,013 | DNA/RNA polymerases, helicases, primases |
-| structural | 5,117 | Capsid, tail, baseplate proteins |
-| transcription | 1,318 | Sigma factors, anti-sigma factors, transcriptional regulators |
-| **Total labeled** | **43,475** | |
-| Dark matter (unlabeled) | 184,394 | No VOG match — prediction targets |
+|---|---|---|
+| host_binding | 248 | Tail fibers, receptor-binding proteins, depolymerases |
+| membrane_disruption | 187 | Holins, endolysins, spanins |
+| iron_acquisition | 164 | Hemin uptake, siderophore auxiliary metabolic genes |
+| structural | 211 | Capsid, portal, tail tube, terminase |
+| replication | 193 | DNA polymerase, helicase, primase |
+| regulatory | 178 | CI/CII repressors, antiterminators |
+| metabolic_amg | 142 | psbA, phoH, sulfur/phosphate AMGs |
+| non_phage | 218 | Human proteins, bacterial proteins, scrambled sequences |
+| **Total** | **1,541** | |
+
+### Non_phage class composition (v6b additions vs v4)
+
+v6b expanded the non_phage class relative to v4 (1,318 sequences) by adding:
+- 92 scrambled versions of training sequences (same composition, disrupted function)
+- 131 diverse human proteins beyond GPCR controls
+
+### Leakage control
+
+MMseqs2 was used to cluster all training sequences at 70% identity. No cluster was split across train and test folds (GroupKFold). The same clustering protocol was applied at 50%, 40%, and 30% identity for the leakage sweep reported in the paper.
+
+A direct comparison of the lead candidate (k99_98199_25) against all 1,541 training sequences confirmed a maximum pairwise similarity of 35.8%, against a synthetic repeat-sequence spacer with no biological relevance. No biologically related training sequence was found.
 
 ---
 
-## 2. Protein Language Model Embeddings
+## 3. Protein Language Model Embeddings
 
-**Model:** ESM-2 `esm2_t12_35M_UR50D` (Lin et al. 2023, *Science* 379:1123)  
+**Model:** ESM-2 `esm2_t12_35M_UR50D` (Lin et al. 2023, *Science* 379:1123)
 - 35 million parameters, 12 transformer layers
-- Pre-trained on 250 million protein sequences from UniRef50 (2022 release)
-- No phage-specific fine-tuning; embeddings are general-purpose
+- Pre-trained on UniRef50 (2022 release)
+- No phage-specific fine-tuning
 
-**Embedding procedure:**
-1. Each protein sequence is tokenized at the amino acid level
-2. Forward pass through all 12 transformer layers
-3. Layer 12 (final) representations extracted per token
-4. Mean-pooled over sequence length (excluding BOS/EOS tokens)
-5. Result: one 480-dimensional vector per protein, independent of sequence length
+**Procedure:**
+1. Tokenise at the amino acid level
+2. Forward pass through all 12 layers
+3. Extract layer 12 (final layer) representations
+4. Mean-pool over residue positions, excluding BOS/EOS tokens
+5. Output: one 480-dimensional vector per sequence, length-independent
 
-**Batch processing:** Batch size 32; adaptive halving on GPU out-of-memory error  
-**Hardware:** NVIDIA A100 (Google Colab Pro)  
-**Runtime:** ~2 hours for 227,996 proteins
+Mean pooling means the embedding dimension captures a learned biochemical property rather than a position — allowing direct comparison of sequences of different lengths in the same feature space.
 
-**Why ESM-2 rather than BLAST:**  
-BLAST detects sequence homology — it requires ~30% sequence identity to produce reliable alignments. The dark matter proteins, by definition, share <30% identity with any characterized protein. ESM-2 captures protein *function* through learned representations of amino acid co-evolution patterns, enabling comparison in "biological meaning space" where sequence-dissimilar but functionally similar proteins can be identified.
+**Why ESM-2 rather than BLAST:** BLAST requires ~30% sequence identity to produce reliable alignments. The viral dark matter proteins, by definition, have no detectable homologs. ESM-2 predicts function from sequence patterns learned across millions of characterised proteins, without requiring a database hit.
 
 ---
 
-## 3. MLP Classifier
+## 4. MLP Classifier (v6b)
 
-**Architecture:**
 ```
-Input layer:   480 neurons  (ESM-2 embedding dimensions)
-Hidden layer 1: 256 neurons (ReLU activation)
-Hidden layer 2: 128 neurons (ReLU activation)
-Output layer:    4 neurons  (Softmax — one per class)
+Input:      480 neurons (ESM-2 embedding)
+Hidden 1:   256 neurons (ReLU)
+Hidden 2:   128 neurons (ReLU)
+Hidden 3:    64 neurons (ReLU)
+Output:       8 neurons (Softmax — one per class)
 ```
 
-**Training configuration:**
-- Optimizer: Adam (learning rate 0.001, auto-adjusted)
-- Regularization: L2 (alpha = 0.0001); early stopping (patience = 10 epochs, validation fraction 10%)
-- Train/test split: 80% train / 20% test, stratified by class to preserve class imbalance
-- Implementation: `sklearn.neural_network.MLPClassifier`
+**Training:** Adam optimizer, learning rate 0.001, L2 regularisation (alpha = 0.001), early stopping (patience 10 epochs, validation fraction 10%). Implemented with `sklearn.neural_network.MLPClassifier`.
 
-**Class imbalance:** Not artificially balanced. The model learns real-world class frequencies.  
-A balanced model would produce unrealistic predictions when applied to the dark matter set.
+**Evaluation:** Five-fold stratified cross-validation; predictions assembled out-of-fold before computing macro F1 and bootstrap confidence interval (n = 1,000 resamples). Both the point estimate and CI were computed from the same matched prediction set; an earlier version of the analysis reported them from different sets, producing an invalid CI, which was corrected.
 
 ---
 
-## 4. Ablation Study
+## 5. Validation Battery
 
-To confirm ESM-2 captures biological signal (not sequence statistics), five feature sets were compared on identical train/test splits:
+| Check | Result |
+|---|---|
+| CV Macro F1 (5-fold, v6b) | 0.9670 ± 0.0174 |
+| Bootstrap 95% CI | [0.9506, 0.9808] |
+| GPCR OOD rejection (n=434) | 100% |
+| Permutation test (n=10,000) | p < 0.0001 |
+| Physicochemical baseline (membrane class) | 0.913 vs 0.989 |
+| Cluster-aware at 30% identity | 0.8663 |
+| Candidate vs training leakage | max 35.8% (synthetic spacer) |
+| External validation (GOV2, n=24,706) | mean confidence 0.819 |
 
-| Feature Set | Dimensionality | Macro F1 |
-|-------------|---------------|----------|
-| ESM-2 embeddings | 480 | **0.917** |
-| k-mer frequencies (k=3,4) | ~8,400 | 0.804 |
-| Amino acid composition | 20 | 0.680 |
-| Protein length | 1 | 0.208 |
-| Shuffled labels (permutation control) | 480 | 0.208 |
-| Random Gaussian embeddings (embedding control) | 480 | 0.208 |
-
-Controls confirm that neither the classifier architecture nor the embedding dimensionality alone drives performance — the biological content of ESM-2 representations is essential.
-
----
-
-## 5. Confidence Filtering
-
-The MLP outputs a 4-class softmax probability vector per protein.  
-**Confidence threshold: ≥ 0.85** (maximum class probability)
-
-- Below threshold: prediction discarded ("low_confidence")
-- At threshold: prediction retained for downstream analysis
-
-Applied to 184,394 dark matter proteins:  
-- High-confidence: 164,288 (89.1%)
-- 92.3% of high-confidence predictions exceed 95% confidence
-
-The 0.85 threshold was selected by inspecting the precision-recall curve on the held-out test set. It corresponds to an empirical precision of ~0.95 on the test data.
+The GOV2 result demonstrates distributional generalisation — the classifier behaves coherently on genes from different oceans, laboratories, and assembly pipelines. It does not establish label accuracy on those proteins, which are hypothetical and lack experimentally confirmed functions.
 
 ---
 
-## 6. Metagenomic Datasets
+## 6. Ablation: Viral Pre-Filtering
 
-### Tara Oceans — ERR315858
-- **Source:** European Nucleotide Archive (ENA)
-- **Location:** Indian Ocean surface (0–5 m), TARA_070 station
-- **Reference:** Sunagawa et al. 2015, *Science* 348:1261359
-- **Assembly:** MEGAHIT v1.2.9 (`--min-contig-len 500`)
-- **Gene prediction:** Prodigal v2.6.3 (meta mode, `-p meta`)
-- **Output:** 2,010 high-confidence phage protein predictions
+**Motivation:** The retired candidate k99_19554_1 demonstrated that high-confidence classifier outputs can originate from bacterial contigs mis-included in the assembly. To quantify this, we compared two pipelines over the same assembly:
 
-### Red Sea KAUST Expedition — SRR2102994
-- **Source:** NCBI SRA
-- **Location:** Red Sea surface, KAUST Expedition 2010–2011
-- **Reference:** Thompson et al. 2017, *ISME J* 11:138
-- **Assembly:** MEGAHIT v1.2.9 (`--min-contig-len 500`)
-- **Contigs assembled:** 42,673
-- **Gene prediction:** Prodigal v2.6.3 (meta mode)
-- **Proteins predicted:** 87,185
-- **High-confidence predictions:** 81,359 (93.3%)
+- **Pipeline A (naive):** classify all proteins from all contigs
+- **Pipeline B (geNomad-first):** classify only proteins from confirmed viral contigs
+
+**Result:** Among the top 50 membrane-disruption candidates, Pipeline A produced 56% false positives (from non-viral contigs). Pipeline B produced 0%. The 0% result was verified as non-circular using a second criterion — flanking-gene analysis confirmed that Pipeline B's candidates carry viral hallmark genes and Caudoviricetes taxonomy independent of the geNomad score.
 
 ---
 
-## 7. Statistical Testing
+## 7. Lead Candidate
 
-**Test:** `statsmodels.stats.proportion.proportions_ztest` (two-tailed)  
-Each class proportion in the ocean dataset is tested against the global RefSeq baseline.
+**k99_98199_25:** 54 amino acids, sequence `MLNLETVKSAVKKFLGSALRLLWKKATSSIKGICATMLTKAKKKIASLRTSGRD`. Net charge +10.49, pI 10.87, GRAVY −0.022.
 
-**Correction:** Bonferroni correction for 4 simultaneous comparisons  
-- Unadjusted α = 0.05
-- Adjusted α = 0.05 / 4 = **0.0125**
+Source contig k99_98199: 26,607 bp, geNomad viral score 0.98.
 
-All reported significance levels (***) exceed this corrected threshold by multiple orders of magnitude (all z > 5, all p < 10⁻⁶).
+**Assembly integrity:** 9.56M read pairs from SRR2102994 mapped back to the contig. Breadth 100%, mean depth 13.01×, median 13.0×, no zero-coverage positions. The gene itself (positions 13,870–14,034) carries 14.57× mean depth with a minimum of 10×.
 
----
+**Genomic context:** All 53 genes on the contig were inspected. Zero bacterial universal single-copy marker genes. Three viral hallmark genes: terminase RNase-H domain (gene 52), head-to-tail connecting protein (gene 53), and DUF3310 (gene 19). The candidate sits between two Caudoviricetes-assigned genes.
 
-## 8. BLAST Validation
+**Novelty:** Seven independent searches — DRAMP, APD3, CAMPR4, DBAASP, Foldseek against PDB, Foldseek against AlphaFold DB, and BLASTp against nr with PAM30 short-peptide parameters — returned no matching homolog. Best BLASTp E-value: 2.5 (statistical noise).
 
-Representative high-confidence predictions (n = 40, 10 per class) were BLASTed against:
-- **NCBI nr** (non-redundant protein database) — confirms annotation class
-- **Swiss-Prot** (manually curated experimental annotations) — checks experimental characterization
-
-Results: All four classes confirmed by nr homology; zero Swiss-Prot hits across all classes.  
-Interpretation: The predicted proteins exist in sequence space (validated by nr) but have never been biochemically characterized (no Swiss-Prot entry) — true dark matter illuminated.
+**Status:** Computational candidate only. No biological activity has been demonstrated. Wet-lab validation is planned pending regulatory approval.
 
 ---
 
-## 9. Biological Interpretation Framework
+## 8. Version History
 
-The convergent surface-ocean signal (host_interaction enrichment, structural depletion) is interpreted through three established ecological frameworks:
+| Version | Training N | CV Macro F1 | Key change |
+|---|---|---|---|
+| v4 | 1,318 | 0.9771 ± 0.0091 | Baseline; 8 classes; GPCR OOD |
+| v5 | 1,334 | 0.9761 ± 0.0062 | Added bacterial AMR negatives |
+| v6b | 1,541 | 0.9670 ± 0.0174 | Scrambled + diverse human negatives; stricter eval |
 
-1. **Kill-the-winner dynamics** (Thingstad 2000, *Limnol Oceanogr* 45:1320): Dominant bacterial taxa attract phage predation → arms race lives in receptor-binding proteins → selection pressure on host_interaction class
-2. **Oligotrophic capsid economics:** Building elaborate capsid structures costs amino acids and ATP; nutrient-poor surface waters favor simpler capsid architectures → structural depletion
-3. **Host range breadth:** Hyper-diverse, fast-dividing surface bacterial communities reward generalist receptor-binding over specialist → host_interaction enrichment
+v6b is the canonical competition version. The lower F1 relative to v4 reflects harder evaluation, not degraded performance — more challenging negatives and cluster-aware GroupKFold testing expose the genuine generalization boundary.
 
 ---
 
-*Full pipeline notebooks available after competition submission (September 2026).*  
-*Contact: samerjahran@gmail.com*
+*Full pipeline notebooks available at:* https://github.com/samerjahran-crypto/Isef2027-phage-dark-matter
+*Contact:* samerjahran@gmail.com
